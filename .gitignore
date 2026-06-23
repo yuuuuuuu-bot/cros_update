@@ -1,0 +1,13 @@
+# 登入 session（每個人電腦各自登入產生）
+session_tw.json
+session_hk.json
+
+# Google 服務帳號金鑰（向管理員索取，勿上傳）
+credentials.json
+
+# 執行 log
+logs/
+
+# Python 暫存
+__pycache__/
+*.pyc
