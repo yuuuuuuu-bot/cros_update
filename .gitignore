@@ -1,3 +1,6 @@
+# 帳號密碼設定（勿上傳）
+config.txt
+
 # 登入 session（每個人電腦各自登入產生）
 session_tw.json
 session_hk.json
