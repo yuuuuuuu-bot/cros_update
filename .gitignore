@@ -4,6 +4,8 @@ config.txt
 # 登入 session（每個人電腦各自登入產生）
 session_tw.json
 session_hk.json
+session_bm.json
+session_google.json
 
 # Google 服務帳號金鑰（向管理員索取，勿上傳）
 credentials.json
@@ -14,3 +16,6 @@ logs/
 # Python 暫存
 __pycache__/
 *.pyc
+
+# 下載的暫存 CSV
+*.csv

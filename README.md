@@ -61,11 +61,51 @@ Register-ScheduledTask -TaskName "CROS_Daily_Update" -Action $action -Trigger $t
 
 ---
 
+---
+
+## Benchmark Email 名單上傳（benchmark_upload.py）
+
+每月 **15 日** 和 **月底** 自動更新聯絡人名單，完成後自動點擊 Google Sheets「更新聯絡人主表」。
+
+### 模式說明
+
+| 模式 | 說明 | 範例 |
+|------|------|------|
+| `mode1` | 更新 TW + HK 新顧客名單（截止日 = 上月同日） | 每月 15 / 月底自動執行 |
+| `mode2 MMDD MMDD` | 建立指定檔期「購買過名單」 | `python benchmark_upload.py mode2 0601 0622` |
+
+### 手動執行
+
+```
+run_benchmark.bat mode1
+run_benchmark.bat mode2 0601 0622
+```
+
+### 設定自動排程（每天 10:00，15日/月底自動判斷執行）
+
+在 PowerShell 執行：
+
+```powershell
+$py    = (Get-Command python).Source
+$dir   = "C:\Users\楊歆榆\cros_updater"
+$action   = New-ScheduledTaskAction -Execute $py -Argument "`"$dir\benchmark_scheduler.py`"" -WorkingDirectory $dir
+$trigger  = New-ScheduledTaskTrigger -Daily -At "10:00AM"
+$settings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit (New-TimeSpan -Hours 2) -StartWhenAvailable -WakeToRun
+$principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited
+Register-ScheduledTask -TaskName "BM_Mode1_HalfMonthly" -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Force
+```
+
+### 首次執行 Google Sheets 登入
+
+第一次執行 mode1 時，瀏覽器會開啟 Google 登入頁面，手動登入後 session 自動保存，之後免登入。
+
+---
+
 ## 不在 GitHub 的檔案（各自處理）
 
 | 檔案 | 說明 |
 |------|------|
 | `config.txt` | 填入帳密後屬於個人資料，請勿上傳 |
 | `credentials.json` | 向管理員索取 |
-| `session_*.json` | 登入後自動產生 |
+| `session_*.json` | 登入後自動產生（tw / hk / bm / google） |
 | `logs/` | 本機執行紀錄 |
