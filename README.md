@@ -30,9 +30,11 @@ HK_PASS=您的密碼
 
 在 PowerShell 執行以下指令（將路徑改為您的資料夾位置）：
 
+先在 PowerShell 中 `cd` 到本資料夾，再執行：
+
 ```powershell
 $py    = (Get-Command python).Source
-$dir   = "C:\您的路徑\cros_updater"
+$dir   = (Get-Item .).FullName
 $action   = New-ScheduledTaskAction -Execute $py -Argument "`"$dir\cros_daily.py`"" -WorkingDirectory $dir
 $trigger  = New-ScheduledTaskTrigger -Daily -At "09:00AM"
 $settings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit (New-TimeSpan -Minutes 30) -StartWhenAvailable -WakeToRun
@@ -83,11 +85,11 @@ run_benchmark.bat mode2 0601 0622
 
 ### 設定自動排程（每天 10:00，15日/月底自動判斷執行）
 
-在 PowerShell 執行：
+先在 PowerShell 中 `cd` 到本資料夾，再執行以下指令：
 
 ```powershell
 $py    = (Get-Command python).Source
-$dir   = "C:\Users\楊歆榆\cros_updater"
+$dir   = (Get-Item .).FullName
 $action   = New-ScheduledTaskAction -Execute $py -Argument "`"$dir\benchmark_scheduler.py`"" -WorkingDirectory $dir
 $trigger  = New-ScheduledTaskTrigger -Daily -At "10:00AM"
 $settings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit (New-TimeSpan -Hours 2) -StartWhenAvailable -WakeToRun
